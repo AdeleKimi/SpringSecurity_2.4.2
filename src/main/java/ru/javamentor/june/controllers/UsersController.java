@@ -8,21 +8,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.june.dao.UserDaoImp;
 import ru.javamentor.june.models.User;
+import ru.javamentor.june.service.UserServiceImp;
 
 @Controller
 @RequestMapping("/users")
 public class UsersController {
 
-    private final UserDaoImp userDaoImp;
+    private final UserServiceImp userServiceImp;
 
     @Autowired
-    public UsersController(UserDaoImp userDaoImp) {
-        this.userDaoImp = userDaoImp;
+    public UsersController(UserServiceImp userServiceImp) {
+        this.userServiceImp = userServiceImp;
     }
 
     @GetMapping()
     public String allUsers(Model model) {
-        model.addAttribute("users",userDaoImp.getAll());
+        model.addAttribute("users",userServiceImp.getAll());
         return "users/AllUsers";
     }
 
@@ -33,7 +34,7 @@ public class UsersController {
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userDaoImp.getUserById(id));
+        model.addAttribute("user", userServiceImp.getUserById(id));
 
         return "users/byId";
     }
@@ -46,13 +47,13 @@ public class UsersController {
             return "users/new";
         }
 
-        userDaoImp.saveUser(user);
+        userServiceImp.saveUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("/{id}/edit")
     public String editUser(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userDaoImp.getUserById(id));
+        model.addAttribute("user", userServiceImp.getUserById(id));
         return "users/edit";
     }
 
@@ -64,14 +65,14 @@ public class UsersController {
             return "users/edit";
         }
 
-        userDaoImp.updateUser(id,user);
+        userServiceImp.updateUser(id,user);
         return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public String deleteUser(@PathVariable("id") long id) {
-        userDaoImp.deleteUser(id);
+        userServiceImp.deleteUser(id);
         return "redirect:/users";
     }
 
