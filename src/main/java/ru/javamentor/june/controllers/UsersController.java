@@ -6,24 +6,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.javamentor.june.dao.UserDaoImp;
 import ru.javamentor.june.models.User;
-import ru.javamentor.june.service.UserServiceImp;
+import ru.javamentor.june.service.UserService;
 
 @Controller
 @RequestMapping("/users")
 public class UsersController {
 
-    private final UserServiceImp userServiceImp;
+    private final UserService userService;
 
     @Autowired
-    public UsersController(UserServiceImp userServiceImp) {
-        this.userServiceImp = userServiceImp;
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping()
     public String allUsers(Model model) {
-        model.addAttribute("users",userServiceImp.getAll());
+        model.addAttribute("users", userService.getAll());
         return "users/AllUsers";
     }
 
@@ -34,7 +33,7 @@ public class UsersController {
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userServiceImp.getUserById(id));
+        model.addAttribute("user", userService.getUserById(id));
 
         return "users/byId";
     }
@@ -47,13 +46,13 @@ public class UsersController {
             return "users/new";
         }
 
-        userServiceImp.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("/{id}/edit")
     public String editUser(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userServiceImp.getUserById(id));
+        model.addAttribute("user", userService.getUserById(id));
         return "users/edit";
     }
 
@@ -65,14 +64,14 @@ public class UsersController {
             return "users/edit";
         }
 
-        userServiceImp.updateUser(id,user);
+        userService.updateUser(id,user);
         return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public String deleteUser(@PathVariable("id") long id) {
-        userServiceImp.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/users";
     }
 

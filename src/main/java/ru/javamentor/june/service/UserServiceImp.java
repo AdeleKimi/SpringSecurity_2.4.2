@@ -1,43 +1,43 @@
 package ru.javamentor.june.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.javamentor.june.dao.UserDao;
 import ru.javamentor.june.dao.UserDaoImp;
 import ru.javamentor.june.models.User;
 
 import java.util.List;
 @Component
 public class UserServiceImp implements UserService{
-    private final UserDaoImp userDaoImp;
+    private final UserDao userDao;
 
-    public UserServiceImp(UserDaoImp userDaoImp) {
-        this.userDaoImp = userDaoImp;
+    public UserServiceImp(UserDaoImp userDao) {
+        this.userDao = userDao;
     }
 
     @Override
     public List<User> getAll() {
-        return userDaoImp.getAll();
+        return userDao.getAll();
     }
 
     @Override
     public User getUserById(long id) {
-        return userDaoImp.getUserById(id);
+        return userDao.getUserById(id);
     }
 
     @Override
     public void saveUser(User user) {
-        userDaoImp.saveUser(user);
+        userDao.saveUser(user);
 
     }
 
     @Override
     public void deleteUser(long id) {
-        userDaoImp.deleteUser(id);
+        userDao.deleteUser(id);
     }
 
     @Override
     public void updateUser(long id, User user) {
-        userDaoImp.updateUser(id,user);
+        userDao.updateUser(id,user);
 
     }
 }
